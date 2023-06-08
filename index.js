@@ -32,7 +32,8 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
 
-    const popularCollection = client.db("sportsDB").collection("classes");
+    const popularClassCollection = client.db("sportsDB").collection("classes");
+    const popularInstructorCollection = client.db("sportsDB").collection("instructors");
 
 
 
@@ -40,17 +41,24 @@ async function run() {
     // Popular Class
 
     app.get('/popularClass', async (req, res) => {
-      const result = await popularCollection.find().toArray();
+      const result = await popularClassCollection.find().toArray();
       res.send(result);
     });
 
     // Popular Class Sorting
 
     app.get('/popularClass', async (req, res) => {
-      const result = await popularCollection.find().sort({ numberOfStudents: -1 }).toArray();
+      const result = await popularClassCollection.find().sort({ numberOfStudents: -1 }).toArray();
       res.send(result);
     });
 
+
+    // Popular Instructors
+
+    app.get('/popularInstructors', async (req, res) => {
+      const result = await popularInstructorCollection.find().toArray();
+      res.send(result);
+    });
 
 
 
