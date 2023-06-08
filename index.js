@@ -61,7 +61,10 @@ async function run() {
     });
 
 
-
+    app.get('/popularInstructors', async (req, res) => {
+      const result = await popularInstructorCollection.find().sort({ numberOfStudents: -1 }).toArray();
+      res.send(result);
+    });
 
 
     // Send a ping to confirm a successful connection
