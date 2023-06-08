@@ -1,0 +1,34 @@
+[
+    {
+        "classPicture": "https://www.piggyride.com/blog/wp-content/uploads/2021/10/Untitled-design-96-1024x536.png",
+        "numberOfStudents": 180,
+        "class": "popular"
+       
+    },
+    {
+        "classPicture": "https://cdn.firstcry.com/education/2022/05/04111910/522565846.jpg",
+        "numberOfStudents": 138,
+        "class": "popular"
+    },
+    {
+        "classPicture": "https://happymom.in.th/upload/738901252b572704bf6c352005fce3ba.jpg",
+        "numberOfStudents": 106,
+        "class": "popular"
+    },
+    {
+        "classPicture": "https://team.fastmodelsports.com/wp-content/uploads/2021/10/istockphoto-1029062064-170667a.jpeg",
+        "numberOfStudents": 92,
+        "class": "popular"
+       
+    },
+    {
+        "classPicture": "https://collaroyrugby.com.au/wp-content/uploads/2019/11/DSC_0214.jpg",
+        "numberOfStudents": 85,
+        "class": "popular"
+    },
+    {
+        "classPicture": "https://www.abileneymca.org/sites/default/files/styles/gallery_image/public/IMG-2499%20%282%29.jpg?itok=OCfLdCqC",
+        "numberOfStudents": 70,
+        "class": "popular"
+    }
+]
