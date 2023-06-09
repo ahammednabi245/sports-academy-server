@@ -1,7 +1,8 @@
 const express = require('express');
 const cors = require('cors');
-const { MongoClient, ServerApiVersion } = require('mongodb');
 const app = express();
+const jwt = require('jsonwebtoken');
+const { MongoClient, ServerApiVersion } = require('mongodb');
 require('dotenv').config();
 const port = process.env.PORT || 5000;
 
@@ -9,6 +10,8 @@ const port = process.env.PORT || 5000;
 // middleware
 app.use(cors());
 app.use(express.json());
+
+
 
 
 
@@ -36,6 +39,14 @@ async function run() {
     const popularInstructorCollection = client.db("sportsDB").collection("instructors");
     const courseCollection = client.db("sportsDB").collection("selectedCourse");
 
+
+
+    app.post('/jwt', (req, res) => {
+      const user = req.body;
+      const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' })
+
+      res.send({ token })
+    })
 
 
 
@@ -77,6 +88,10 @@ async function run() {
       res.send(result);
     });
 
+    app.get('/selectedCourse', async (req, res) => {
+      const result = await courseCollection.find().toArray();
+      res.send(result);
+    });
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
