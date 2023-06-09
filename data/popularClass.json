@@ -2,33 +2,57 @@
     {
         "classPicture": "https://www.piggyride.com/blog/wp-content/uploads/2021/10/Untitled-design-96-1024x536.png",
         "numberOfStudents": 180,
+        "name": "Cricket",
+        "instructorName": " Celeste du Toit",
+        "availableSeats": 10,
+        "price": 250,
         "class": "popular"
        
     },
     {
         "classPicture": "https://cdn.firstcry.com/education/2022/05/04111910/522565846.jpg",
         "numberOfStudents": 138,
+        "name": "Football",
+        "instructorName": " Alexis Chalais",
+        "availableSeats": 15,
+        "price": 200,
         "class": "popular"
     },
     {
         "classPicture": "https://happymom.in.th/upload/738901252b572704bf6c352005fce3ba.jpg",
         "numberOfStudents": 106,
+        "name": "Badminton",
+        "instructorName": " Mulyo Handoyo",
+        "availableSeats": 26,
+        "price": 130,
         "class": "popular"
     },
     {
         "classPicture": "https://team.fastmodelsports.com/wp-content/uploads/2021/10/istockphoto-1029062064-170667a.jpeg",
         "numberOfStudents": 92,
+        "name": "Volleyball",
+        "instructorName": " Mr. Alex",
+        "availableSeats": 9,
+        "price": 115,
         "class": "popular"
        
     },
     {
         "classPicture": "https://collaroyrugby.com.au/wp-content/uploads/2019/11/DSC_0214.jpg",
         "numberOfStudents": 85,
+        "name": "Rugby",
+        "instructorName": "Rhod Gilbert",
+        "availableSeats": 21,
+        "price": 145,
         "class": "popular"
     },
     {
         "classPicture": "https://www.abileneymca.org/sites/default/files/styles/gallery_image/public/IMG-2499%20%282%29.jpg?itok=OCfLdCqC",
         "numberOfStudents": 70,
+        "name": "Basketball",
+        "instructorName": "Fred Manyawu",
+        "availableSeats": 17,
+        "price": 140,
         "class": "popular"
     }
 ]

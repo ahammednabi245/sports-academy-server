@@ -32,23 +32,24 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
 
-    const popularClassCollection = client.db("sportsDB").collection("classes");
+    const classCollection = client.db("sportsDB").collection("classes");
     const popularInstructorCollection = client.db("sportsDB").collection("instructors");
+    const courseCollection = client.db("sportsDB").collection("selectedCourse");
 
 
 
 
-    // Popular Class
+    
 
-    app.get('/popularClass', async (req, res) => {
-      const result = await popularClassCollection.find().toArray();
+    app.get('/classes', async (req, res) => {
+      const result = await classCollection.find().toArray();
       res.send(result);
     });
 
-    // Popular Class Sorting
+   
 
-    app.get('/popularClass', async (req, res) => {
-      const result = await popularClassCollection.find().sort({ numberOfStudents: -1 }).toArray();
+    app.get('/classes', async (req, res) => {
+      const result = await classCollection.find().sort({ numberOfStudents: -1 }).toArray();
       res.send(result);
     });
 
@@ -63,6 +64,16 @@ async function run() {
 
     app.get('/popularInstructors', async (req, res) => {
       const result = await popularInstructorCollection.find().sort({ numberOfStudents: -1 }).toArray();
+      res.send(result);
+    });
+
+
+    // Selected Course 
+
+    app.post('/selectedCourse', async (req, res) => {
+      const classes = req.body;
+      console.log(classes);
+      const result = await courseCollection.insertOne(classes);
       res.send(result);
     });
 
