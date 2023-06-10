@@ -159,20 +159,37 @@ async function run() {
       })
     })
 
-    // payment related api
+    
     // payment related api
     app.post('/enrolled', verifyJWT, async (req, res) => {
       const payment = req.body;
       const insertResult = await enrolledCollection.insertOne(payment);
 
-      // Remove the course from the courseCollection
-      const courseId = payment._id; // Assuming the _id field is present in the payment object
+     
+      const courseId = payment._id; 
       const deleteResult = await courseCollection.deleteOne({ _id: new ObjectId(courseId) });
 
       res.send({ insertResult, deleteResult });
     });
 
 
+
+    app.get('/enrolled', verifyJWT, async (req, res) => {
+      const email = req.query.email;
+
+      if (!email) {
+        res.send([]);
+      }
+
+      const decodedEmail = req.decoded.email;
+      if (email !== decodedEmail) {
+        return res.status(403).send({ error: true, message: 'Forbidden access' })
+      }
+
+      const query = { email: email };
+      const result = await enrolledCollection.find(query).toArray();
+      res.send(result);
+    });
 
 
 
