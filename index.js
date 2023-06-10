@@ -4,6 +4,7 @@ const app = express();
 const jwt = require('jsonwebtoken');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config();
+const stripe = require('stripe')(process.env.PAYMENT_SECRET_KEY)
 const port = process.env.PORT || 5000;
 
 
@@ -55,6 +56,7 @@ async function run() {
     const classCollection = client.db("sportsDB").collection("classes");
     const popularInstructorCollection = client.db("sportsDB").collection("instructors");
     const courseCollection = client.db("sportsDB").collection("selectedCourse");
+    const enrolledCollection = client.db("sportsDB").collection("enrolled");
 
 
 
@@ -67,14 +69,14 @@ async function run() {
 
 
 
-    
+
 
     app.get('/classes', async (req, res) => {
       const result = await classCollection.find().toArray();
       res.send(result);
     });
 
-   
+
 
     app.get('/classes', async (req, res) => {
       const result = await classCollection.find().sort({ numberOfStudents: -1 }).toArray();
@@ -105,7 +107,7 @@ async function run() {
       res.send(result);
     });
 
-   
+
 
     app.get('/selectedCourse', verifyJWT, async (req, res) => {
       const email = req.query.email;
@@ -131,6 +133,47 @@ async function run() {
       const result = await courseCollection.deleteOne(query);
       res.send(result);
     })
+
+
+    app.get('/selectedCourse/:id', async (req, res) => {
+      const id = req.params.id
+      const query = { _id: new ObjectId(id) }
+      const result = await courseCollection.findOne(query)
+      res.send(result)
+    })
+
+
+    //  Payment Intent
+
+    app.post('/create-payment-intent', verifyJWT, async (req, res) => {
+      const { price } = req.body;
+      const amount = parseInt(price * 100);
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: amount,
+        currency: 'usd',
+        payment_method_types: ['card']
+      });
+
+      res.send({
+        clientSecret: paymentIntent.client_secret
+      })
+    })
+
+    // payment related api
+    // payment related api
+    app.post('/enrolled', verifyJWT, async (req, res) => {
+      const payment = req.body;
+      const insertResult = await enrolledCollection.insertOne(payment);
+
+      // Remove the course from the courseCollection
+      const courseId = payment._id; // Assuming the _id field is present in the payment object
+      const deleteResult = await courseCollection.deleteOne({ _id: new ObjectId(courseId) });
+
+      res.send({ insertResult, deleteResult });
+    });
+
+
+
 
 
     // Send a ping to confirm a successful connection
