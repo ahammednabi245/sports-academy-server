@@ -6,7 +6,8 @@
         "instructorName": " Celeste du Toit",
         "availableSeats": 10,
         "price": 250,
-        "class": "popular"
+        "class": "popular",
+        "instructorEmail": "info@celeste.com"
        
     },
     {
@@ -16,7 +17,9 @@
         "instructorName": " Alexis Chalais",
         "availableSeats": 15,
         "price": 200,
-        "class": "popular"
+        "class": "popular",
+        "instructorEmail": "info@chalais.com"
+        
     },
     {
         "classPicture": "https://happymom.in.th/upload/738901252b572704bf6c352005fce3ba.jpg",
@@ -25,7 +28,8 @@
         "instructorName": " Mulyo Handoyo",
         "availableSeats": 26,
         "price": 130,
-        "class": "popular"
+        "class": "popular",
+        "instructorEmail": "info@muloy.com"
     },
     {
         "classPicture": "https://team.fastmodelsports.com/wp-content/uploads/2021/10/istockphoto-1029062064-170667a.jpeg",
@@ -34,7 +38,8 @@
         "instructorName": " Mr. Alex",
         "availableSeats": 9,
         "price": 115,
-        "class": "popular"
+        "class": "popular",
+        "instructorEmail": "info@alex.com"
        
     },
     {
@@ -44,7 +49,8 @@
         "instructorName": "Rhod Gilbert",
         "availableSeats": 21,
         "price": 145,
-        "class": "popular"
+        "class": "popular",
+        "instructorEmail": "info@gilbert.com"
     },
     {
         "classPicture": "https://www.abileneymca.org/sites/default/files/styles/gallery_image/public/IMG-2499%20%282%29.jpg?itok=OCfLdCqC",
@@ -53,6 +59,7 @@
         "instructorName": "Fred Manyawu",
         "availableSeats": 17,
         "price": 140,
-        "class": "popular"
+        "class": "popular",
+        "instructorEmail": "info@manyawu.com"
     }
 ]

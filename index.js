@@ -164,20 +164,20 @@ async function run() {
     app.post('/enrolled/:id', verifyJWT, async (req, res) => {
       const id = req.params.id;
       const payment = req.body;
-  
+
       const insertResult = await enrolledCollection.insertOne(payment);
-  
+
       const courseId = payment._id;
       const deleteResult = await courseCollection.deleteOne({ _id: new ObjectId(courseId) });
-  
+
       const updateResult = await classCollection.updateOne(
-          { _id: new ObjectId(id) },
-          { $set: { availableSeats: +1 } }
+        { _id: new ObjectId(id) },
+        { $set: { availableSeats: +1 } }
       );
-  
+
       res.send({ insertResult, deleteResult, updateResult });
-  });
-  
+    });
+
 
     // availableSeats: -1
 
@@ -208,7 +208,7 @@ async function run() {
       body.createdAt = new Date().toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' });
       body.price = parseFloat(body.price);
       body.availableSeats = parseFloat(body.availableSeats);
-      body.status = "pending"; // Add this line to set the status field to "pending"
+      body.status = "pending"; 
       const result = await classCollection.insertOne(body);
       if (result?.insertedId) {
         return res.status(200).send(result);
@@ -231,11 +231,11 @@ async function run() {
         .toArray();
       res.send(myClass);
     });
-    
+
     app.put('/updateMyClass/:id', async (req, res) => {
       const id = req.params.id;
       const body = req.body;
-      const filter = { _id: new ObjectId(id) }; 
+      const filter = { _id: new ObjectId(id) };
       const updateDoc = {
         $set: {
           name: body.name,
@@ -244,13 +244,31 @@ async function run() {
           instructorEmail: body.instructorEmail,
           price: body.price,
           availableSeats: body.availableSeats,
-        
+          status: body.status, 
         },
       };
       const result = await classCollection.updateOne(filter, updateDoc);
       res.send(result);
     });
-    
+
+
+    app.post('/sendFeedback/:id', async (req, res) => {
+      const id = req.params.id;
+      const feedback = req.body.feedback;
+
+      const filter = { _id: new ObjectId(id) };
+      const updateDoc = {
+        $set: {
+          feedback: feedback, 
+        },
+      };
+
+      const result = await classCollection.updateOne(filter, updateDoc);
+      res.send(result);
+    });
+
+
+
 
 
     // Send a ping to confirm a successful connection
