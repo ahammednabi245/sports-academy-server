@@ -159,49 +159,50 @@ async function run() {
       })
     })
 
-    
+
     // payment related api
-    app.post('/enrolled', verifyJWT, async (req, res) => {
+    app.post('/enrolled/:id', verifyJWT, async (req, res) => {
+      const id = req.params.id;
       const payment = req.body;
+  
       const insertResult = await enrolledCollection.insertOne(payment);
-    
+  
       const courseId = payment._id;
       const deleteResult = await courseCollection.deleteOne({ _id: new ObjectId(courseId) });
-    
-
-      const updateResult = await classCollection.findOneAndUpdate(
-        { _id: new ObjectId(courseId) },
-        { $inc: { availableSeats: -1 } }
+  
+      const updateResult = await classCollection.updateOne(
+          { _id: new ObjectId(id) },
+          { $set: { availableSeats: +1 } }
       );
-      
-    
+  
       res.send({ insertResult, deleteResult, updateResult });
-    });
-    
+  });
+  
+
     // availableSeats: -1
- 
+
 
 
     app.get('/enrolled', verifyJWT, async (req, res) => {
       const email = req.query.email;
-    
+
       if (!email) {
         res.send([]);
       }
-    
+
       const decodedEmail = req.decoded.email;
       if (email !== decodedEmail) {
         return res.status(403).send({ error: true, message: 'Forbidden access' });
       }
-    
+
       const query = { email: email };
       const result = await enrolledCollection.find(query).sort({ date: -1 }).toArray();
       res.send(result);
     });
-    
+
 
     // Instructor page
-    
+
     app.post("/classes", async (req, res) => {
       const body = req.body;
       body.createdAt = new Date().toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' });
@@ -218,12 +219,38 @@ async function run() {
         });
       }
     });
+
+
+
+    app.get("/myClass/:email", async (req, res) => {
+      console.log(req.params.email);
+      const myClass = await classCollection
+        .find({
+          instructorEmail: req.params.email,
+        })
+        .toArray();
+      res.send(myClass);
+    });
     
+    app.put('/updateMyClass/:id', async (req, res) => {
+      const id = req.params.id;
+      const body = req.body;
+      const filter = { _id: new ObjectId(id) }; 
+      const updateDoc = {
+        $set: {
+          name: body.name,
+          classPicture: body.classPicture,
+          instructorName: body.instructorName,
+          instructorEmail: body.instructorEmail,
+          price: body.price,
+          availableSeats: body.availableSeats,
+        
+        },
+      };
+      const result = await classCollection.updateOne(filter, updateDoc);
+      res.send(result);
+    });
     
-
-
- 
-
 
 
     // Send a ping to confirm a successful connection
