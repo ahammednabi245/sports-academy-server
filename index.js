@@ -164,32 +164,65 @@ async function run() {
     app.post('/enrolled', verifyJWT, async (req, res) => {
       const payment = req.body;
       const insertResult = await enrolledCollection.insertOne(payment);
-
-     
-      const courseId = payment._id; 
+    
+      const courseId = payment._id;
       const deleteResult = await courseCollection.deleteOne({ _id: new ObjectId(courseId) });
+    
 
-      res.send({ insertResult, deleteResult });
+      const updateResult = await classCollection.findOneAndUpdate(
+        { _id: new ObjectId(courseId) },
+        { $inc: { availableSeats: -1 } }
+      );
+      
+    
+      res.send({ insertResult, deleteResult, updateResult });
     });
-
+    
+    // availableSeats: -1
+ 
 
 
     app.get('/enrolled', verifyJWT, async (req, res) => {
       const email = req.query.email;
-
+    
       if (!email) {
         res.send([]);
       }
-
+    
       const decodedEmail = req.decoded.email;
       if (email !== decodedEmail) {
-        return res.status(403).send({ error: true, message: 'Forbidden access' })
+        return res.status(403).send({ error: true, message: 'Forbidden access' });
       }
-
+    
       const query = { email: email };
-      const result = await enrolledCollection.find(query).toArray();
+      const result = await enrolledCollection.find(query).sort({ date: -1 }).toArray();
       res.send(result);
     });
+    
+
+    // Instructor page
+    
+    app.post("/classes", async (req, res) => {
+      const body = req.body;
+      body.createdAt = new Date().toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' });
+      body.price = parseFloat(body.price);
+      body.availableSeats = parseFloat(body.availableSeats);
+      body.status = "pending"; // Add this line to set the status field to "pending"
+      const result = await classCollection.insertOne(body);
+      if (result?.insertedId) {
+        return res.status(200).send(result);
+      } else {
+        return res.status(404).send({
+          message: "can not insert try again later",
+          status: false,
+        });
+      }
+    });
+    
+    
+
+
+ 
 
 
 
