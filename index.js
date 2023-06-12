@@ -277,7 +277,7 @@ async function run() {
 
       const updateResult = await classCollection.updateOne(
         { _id: new ObjectId(id) },
-        { $set: { availableSeats: -1 } }
+        { $inc: { availableSeats: -1 } }
       );
 
       res.send({ insertResult, deleteResult, updateResult });
@@ -337,9 +337,32 @@ async function run() {
       res.send(myClass);
     });
 
+    app.put('/updateClass/:id', async (req, res) => {
+      const id = req.params.id;
+      const body = req.body;
+
+      const filter = { _id: new ObjectId(id) };
+      const updateDoc = {
+        $set: {
+          name: body.name,
+          classPicture: body.classPicture,
+          instructorName: body.instructorName,
+          instructorEmail: body.instructorEmail,
+          price: body.price,
+          availableSeats: body.availableSeats,
+          status: body.status,
+        },
+      };
+      const result = await classCollection.updateOne(filter, updateDoc);
+      res.send(result);
+    });
+
     app.put('/updateMyClass/:id', async (req, res) => {
       const id = req.params.id;
       const body = req.body;
+      body.price = parseFloat(body.price);
+      body.availableSeats = parseFloat(body.availableSeats);
+      body.status = "pending";
       const filter = { _id: new ObjectId(id) };
       const updateDoc = {
         $set: {
